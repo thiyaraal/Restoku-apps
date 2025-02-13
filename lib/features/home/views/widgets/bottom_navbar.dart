@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:restoku_app/core/constants/color_style.dart';
-import 'package:restoku_app/core/widgets/custom/box_decoration.dart';
+import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/features/profile/services/theme_provider.dart';
 
 

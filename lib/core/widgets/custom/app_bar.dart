@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:restoku_app/core/constants/text_style.dart';
-import 'package:restoku_app/core/widgets/custom/box_decoration.dart';
+import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 
 class AppBarWidget extends StatelessWidget {
   final void Function() onPressed;

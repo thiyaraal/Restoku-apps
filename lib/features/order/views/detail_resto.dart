@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:restoku_app/core/helpers/app_routes.dart';
-import 'package:restoku_app/core/widgets/custom/box_decoration.dart';
+import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/custom/row_title_icon.dart';
 import 'package:restoku_app/core/widgets/empty_content/empety_widget.dart';
 import 'package:restoku_app/core/widgets/modals/category_modals.dart';
@@ -125,8 +125,9 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
                                   itemBuilder: (context, index) {
                                     final menuItem = menuItems[index];
                                     return ItemMenuCard(
-                                        menuName: menuItem.name ?? 'Unknown',
-                                        category: provider.selectedCategory);
+                                      menuName: menuItem.name ?? 'Unknown',
+                                      category: provider.selectedCategory,
+                                    );
                                   },
                                 );
                               },

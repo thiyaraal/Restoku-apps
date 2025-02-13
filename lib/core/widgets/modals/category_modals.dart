@@ -60,7 +60,7 @@ class CategoriesModalContent extends StatelessWidget {
                   child: Text(
                     "No menu available",
                     style: TextStyles.regularBodyLarge(context)?.copyWith(
-                       color: ColorStyles.black,
+                      color: ColorStyles.black,
                     ),
                   ),
                 )
@@ -90,8 +90,7 @@ class CategoriesModalContent extends StatelessWidget {
                           ),
                           Text(
                             categories[index]["title"]!,
-                            style:
-                                TextStyles.boldBodyLarge(context)?.copyWith(
+                            style: TextStyles.boldBodyLarge(context)?.copyWith(
                               color: ColorStyles.black,
                             ),
                           )
