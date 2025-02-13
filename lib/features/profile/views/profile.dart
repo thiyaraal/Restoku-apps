@@ -5,7 +5,7 @@ import 'package:restoku_app/core/constants/color_style.dart';
 import 'package:restoku_app/core/constants/image_network.dart';
 import 'package:restoku_app/core/constants/text_style.dart';
 import 'package:restoku_app/core/widgets/custom/app_bar.dart';
-import 'package:restoku_app/core/widgets/custom/box_decoration.dart';
+import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/snackbar/top_snackbar.dart';
 import 'package:restoku_app/features/profile/services/theme_provider.dart';
 import 'package:restoku_app/features/profile/views/widgets/profile_header.dart';
@@ -52,7 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: 'Profil',
                         onTap: () {
                           TopSnackBarWidget.showInfoSnackBar(
-                              context, "On Going gess");
+                                            context, "Fitur ini sedang on progress ya");
                         },
                       ),
                       ProfileMenuItem(
@@ -60,7 +60,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: 'Pesanan Saya',
                         onTap: () {
                           TopSnackBarWidget.showInfoSnackBar(
-                              context, "On Going gess");
+                         context, "Fitur ini sedang on progress ya");
                         },
                       ),
                     ],
@@ -74,7 +74,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: "Privasi & Keamanan",
                         onTap: () {
                           TopSnackBarWidget.showInfoSnackBar(
-                              context, "On Going gess");
+                             context, "Fitur ini sedang on progress ya");
                         },
                       ),
                       ProfileMenuItem(
@@ -82,7 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: "Bantuan",
                         onTap: () {
                           TopSnackBarWidget.showInfoSnackBar(
-                              context, "On Going gess");
+                           context, "Fitur ini sedang on progress ya");
                         },
                       ),
                     ],
@@ -96,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: "Syarat & Ketentuan",
                         onTap: () {
                           TopSnackBarWidget.showInfoSnackBar(
-                              context, "On Going gess");
+                             context, "Fitur ini sedang on progress ya");
                         },
                       ),
                     ],
@@ -106,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: TextButton(
                       onPressed: () {
                         TopSnackBarWidget.showInfoSnackBar(
-                            context, "Belum ada login nya kan ");
+                            context, "Fitur ini sedang on progress ya");
                       },
                       child: Text(
                         "Logout",

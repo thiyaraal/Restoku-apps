@@ -13,6 +13,8 @@ class CustomDecorations {
           : LinearGradient(
               colors: [
                 ColorStyles.secondary,
+                const Color.fromARGB(255, 110, 92, 46),
+                Color.fromARGB(255, 153, 125, 55),
                 ColorStyles.primary,
               ],
               begin: Alignment.topCenter,
@@ -58,5 +60,4 @@ class CustomDecorations {
 
     return themeProvider.isDarkMode ? ColorStyles.black : ColorStyles.white;
   }
- 
 }

@@ -32,7 +32,7 @@ class BannerCard extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(10),
               child: Image.asset(
-                ImageAsset.banner,
+                ImageAsset.bannerHome,
                 fit: BoxFit.cover,
                 width: double.infinity,
                 height: 160,

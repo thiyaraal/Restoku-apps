@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:restoku_app/core/constants/color_style.dart';
 import 'package:restoku_app/core/constants/text_style.dart';
-import 'package:restoku_app/core/widgets/custom/box_decoration.dart';
+import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
+
 
 class ProfileHeader extends StatelessWidget {
   final String profileImage;
@@ -10,13 +12,15 @@ class ProfileHeader extends StatelessWidget {
   final String userEmail;
   final VoidCallback onTap;
 
-  const ProfileHeader(
-      {super.key,
-      required this.onTap,
-      required this.profileImage,
-      required this.userName,
-      required this.phone,
-      required this.userEmail});
+  const ProfileHeader({
+    super.key,
+    required this.onTap,
+    required this.profileImage,
+    required this.userName,
+    required this.phone,
+    required this.userEmail,
+  });
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -26,49 +30,64 @@ class ProfileHeader extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
           border: Border.all(
-              color: CustomDecorations.darkThemeColor(context),
+            color: CustomDecorations.darkThemeColor(context),
           ),
         ),
         child: Row(
           children: [
             Container(
               alignment: Alignment.center,
-              child: CircleAvatar(
-                radius: 36,
-                backgroundImage: NetworkImage(
-                  profileImage,
-                ),
-              ),
+              child: profileImage.isNotEmpty
+                  ? CircleAvatar(
+                      radius: 36,
+                      backgroundColor: Colors.grey[200],
+                      child: ClipOval(
+                        child: Image.network(
+                          profileImage,
+                          fit: BoxFit.cover,
+                          width: 62,
+                          height: 72,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(
+                              size: 52,
+                              TablerIcons.user,
+                              color: ColorStyles.disabled,
+                            );
+                          },
+                        ),
+                      ),
+                    )
+                  : Icon(
+                          size: 52,
+                      TablerIcons.user,
+                      color: ColorStyles.disabled,
+                    ),
             ),
-            SizedBox(width: 16),
+            const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   userName,
-                  style: TextStyles. 
-                 regularBodyLarge(context)?.copyWith(
-                                    color: ColorStyles.white
-                  ),
+                  style: TextStyles.regularBodyLarge(context)
+                      ?.copyWith(color: ColorStyles.white),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   phone,
                   style: TextStyles.boldBodySmall(context)?.copyWith(
                     color: ColorStyles.white,
                   ),
                 ),
-                SizedBox(height: 4),
+                const SizedBox(height: 4),
                 Text(
                   userEmail,
-                  style: TextStyles.
-                  boldBodySmall(context)?.copyWith(
+                  style: TextStyles.boldBodySmall(context)?.copyWith(
                     color: ColorStyles.white,
                   ),
                 ),
               ],
             ),
-           
           ],
         ),
       ),

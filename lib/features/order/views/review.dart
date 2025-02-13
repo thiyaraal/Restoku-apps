@@ -1,7 +1,9 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:restoku_app/core/constants/text_style.dart';
-import 'package:restoku_app/core/widgets/custom/box_decoration.dart';
+import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/empty_content/empety_widget.dart';
 import 'package:restoku_app/core/widgets/snackbar/top_snackbar.dart';
 import 'package:restoku_app/features/order/view_models/add_review_provider.dart';

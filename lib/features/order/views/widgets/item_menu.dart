@@ -20,8 +20,11 @@ class ItemMenuCard extends StatelessWidget {
         : ImageNetwork.drinks;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0),
+      padding: const EdgeInsets.only(
+        bottom: 8.0,
+      ),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Container(
             decoration: BoxDecoration(
@@ -48,14 +51,16 @@ class ItemMenuCard extends StatelessWidget {
               ),
             ),
           ),
-          const SizedBox(
-            height: 8.0,
-          ),
+          const SizedBox(height: 8.0),
           Text(
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             menuName,
             style: TextStyles.regularBodyLarge(context)?.copyWith(
               color: ColorStyles.white,
             ),
+            softWrap: true,
+            textAlign: TextAlign.center,
           ),
         ],
       ),
