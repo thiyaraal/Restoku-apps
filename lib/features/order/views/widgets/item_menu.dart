@@ -1,0 +1,64 @@
+import 'package:flutter/material.dart';
+import 'package:restoku_app/core/constants/color_style.dart';
+import 'package:restoku_app/core/constants/image_network.dart';
+import 'package:restoku_app/core/constants/text_style.dart';
+
+class ItemMenuCard extends StatelessWidget {
+  final String menuName;
+  final String category;
+
+  const ItemMenuCard({
+    super.key,
+    required this.menuName,
+    required this.category,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    String imageUrl = category.toLowerCase() == 'foods'
+        ? ImageNetwork.foods
+        : ImageNetwork.drinks;
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Column(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              color: ColorStyles.primary,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: ColorStyles.black.withOpacity(0.2),
+                  blurRadius: 10,
+                  offset: const Offset(0, 5),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  imageUrl,
+                  width: 100,
+                  height: 100,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(
+            height: 8.0,
+          ),
+          Text(
+            menuName,
+            style: TextStyles.regularBodyLarge(context)?.copyWith(
+              color: ColorStyles.white,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

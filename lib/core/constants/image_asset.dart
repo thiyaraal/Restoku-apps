@@ -1,0 +1,5 @@
+class ImageAsset {
+  static const String badNetwork = 'assets/images/bad_network.png';
+  static const String banner = 'assets/images/banner.jpg';
+  static const String search = 'assets/images/search.png';
+}
