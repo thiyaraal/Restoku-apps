@@ -35,7 +35,7 @@ class BannerCard extends StatelessWidget {
                 ImageAsset.bannerHome,
                 fit: BoxFit.cover,
                 width: double.infinity,
-                height: 160,
+                height: 180,
               ),
             ),
             Positioned(

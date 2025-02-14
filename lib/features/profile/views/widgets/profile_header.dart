@@ -26,6 +26,7 @@ class ProfileHeader extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        width: double.infinity,
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(15),
@@ -64,29 +65,32 @@ class ProfileHeader extends StatelessWidget {
                     ),
             ),
             const SizedBox(width: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  userName,
-                  style: TextStyles.regularBodyLarge(context)
-                      ?.copyWith(color: ColorStyles.white),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  phone,
-                  style: TextStyles.boldBodySmall(context)?.copyWith(
-                    color: ColorStyles.white,
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    
+                    userName,
+                    style: TextStyles.regularBodyLarge(context)
+                        ?.copyWith(color: ColorStyles.white),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  userEmail,
-                  style: TextStyles.boldBodySmall(context)?.copyWith(
-                    color: ColorStyles.white,
+                  const SizedBox(height: 4),
+                  Text(
+                    phone,
+                    style: TextStyles.boldBodySmall(context)?.copyWith(
+                      color: ColorStyles.white,
+                    ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 4),
+                  Text(
+                    userEmail,
+                    style: TextStyles.boldBodySmall(context)?.copyWith(
+                      color: ColorStyles.white,
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

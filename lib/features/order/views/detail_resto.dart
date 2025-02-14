@@ -80,62 +80,70 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
                     final resto = provider.detail!.restaurant!;
 
                     return Padding(
-                      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          DescRestoWidget(
-                            actionReview: () {
-                              Navigator.pushNamed(
-                                context,
-                                AppRoutes.review,
-                                arguments: {
-                                  'restaurantId': resto.id ?? '0',
+                        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                        child: SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              DescRestoWidget(
+                                actionReview: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.review,
+                                    arguments: {
+                                      'restaurantId': resto.id ?? '0',
+                                    },
+                                  );
                                 },
-                              );
-                            },
-                            typeFood: resto.categories
-                                    ?.map((e) => e.name)
-                                    .join(', ') ??
-                                "Unknown",
-                            addres: "${resto.address}, ${resto.city}",
-                            description:
-                                resto.description ?? "No description available",
-                          ),
-                          const SizedBox(height: 12.0),
-                          RowTitleIcon(
-                              title: 'Menu',
-                              icon: TablerIcons.list,
-                              actionIcon: () {
-                                showCategoriesModal(context);
-                              }),
-                          const SizedBox(height: 12.0),
-                          Expanded(
-                            child: Consumer<DetailRestaurantProvider>(
-                              builder: (context, provider, child) {
-                                final menuItems = provider.filteredMenus;
+                                typeFood: resto.categories
+                                        ?.map((e) => e.name)
+                                        .join(', ') ??
+                                    "Unknown",
+                                addres: "${resto.address}, ${resto.city}",
+                                description: resto.description ??
+                                    "No description available",
+                              ),
+                              const SizedBox(height: 12.0),
+                              RowTitleIcon(
+                                title: 'Menu',
+                                icon: TablerIcons.list,
+                                actionIcon: () {
+                                  showCategoriesModal(context);
+                                },
+                              ),
+                              const SizedBox(height: 12.0),
+                              Consumer<DetailRestaurantProvider>(
+                                builder: (context, provider, child) {
+                                  final menuItems = provider.filteredMenus;
+                        
+                                  return GridView.builder(
+                                    physics: NeverScrollableScrollPhysics(),
+                                    shrinkWrap: true,
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10.0,
+                                       
+                                      mainAxisSpacing: 10.0,
+                                      childAspectRatio: 0.8,
+                                    
+                                    ),
+                                    
 
-                                return GridView.builder(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                    childAspectRatio: 1,
-                                  ),
-                                  itemCount: menuItems.length,
-                                  itemBuilder: (context, index) {
-                                    final menuItem = menuItems[index];
-                                    return ItemMenuCard(
-                                      menuName: menuItem.name ?? 'Unknown',
-                                      category: provider.selectedCategory,
-                                    );
-                                  },
-                                );
-                              },
-                            ),
+                                    itemCount: menuItems.length,
+                                    itemBuilder: (context, index) {
+                                      final menuItem = menuItems[index];
+                                      return ItemMenuCard(
+                                        menuName: menuItem.name ?? 'Unknown',
+                                        category: provider.selectedCategory,
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    );
+                        ));
                   },
                 ),
               ),

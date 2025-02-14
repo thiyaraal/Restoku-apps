@@ -18,7 +18,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    
+
     if (widget.activeScreen != null) {
       _selectedNavbar = widget.activeScreen!;
     }
@@ -47,46 +47,30 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        bool isWideScreen = constraints.maxWidth > 600;
-
         return Scaffold(
-          body: Row(
+          body: Column(
             children: [
-              
-              if (isWideScreen)
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.topRight,
-                        child: BottomNavbarWidget(
-                          currentIndex: _selectedNavbar,
-                          onTap: _changeSelectedNavbar,
-                          isVertical:
-                              true, 
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              
               Expanded(
-                flex: 4, 
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 1000),
                   child: screenBottomNavigation(_selectedNavbar),
                 ),
               ),
-            ],
-          ),
-          
-          bottomNavigationBar: isWideScreen
-              ? null
-              : BottomNavbarWidget(
+              Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  border: Border(
+                    top: BorderSide(color: Colors.grey.shade300, width: 1),
+                  ),
+                ),
+                child: BottomNavbarWidget(
                   currentIndex: _selectedNavbar,
                   onTap: _changeSelectedNavbar,
                 ),
+              ),
+            ],
+          ),
         );
       },
     );

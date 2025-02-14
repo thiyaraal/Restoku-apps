@@ -29,93 +29,103 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             const SizedBox(height: 50),
+
+            
             AppBarWidget(onPressed: themeProvider.toggleTheme),
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 20),
-                  ProfileHeader(
-                    profileImage: ImageNetwork.profileImage,
-                    phone: "08123456789",
-                    userEmail: "thiyaraal@gmai.cmom",
-                    userName: "Thhiyara Al-Mawaddah",
-                    onTap: () {},
-                  ),
-                  const SizedBox(height: 16),
-                  CustomProfileSection(
-                    title: 'Akun',
-                    items: [
-                      ProfileMenuItem(
-                        iconTitle: TablerIcons.user,
-                        title: 'Profil',
-                        onTap: () {
-                          TopSnackBarWidget.showInfoSnackBar(
-                                            context, "Fitur ini sedang on progress ya");
-                        },
+
+            
+            Expanded(
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(), 
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 20),
+                      ProfileHeader(
+                        profileImage: ImageNetwork.profileImage,
+                        phone: "08123456789",
+                        userEmail: "thiyaraal@gmai.cmom",
+                        userName: "Thhiyara Al-Mawaddah",
+                        onTap: () {},
                       ),
-                      ProfileMenuItem(
-                        iconTitle: TablerIcons.bowl,
-                        title: 'Pesanan Saya',
-                        onTap: () {
-                          TopSnackBarWidget.showInfoSnackBar(
-                         context, "Fitur ini sedang on progress ya");
-                        },
+                      const SizedBox(height: 16),
+                      CustomProfileSection(
+                        title: 'Akun',
+                        items: [
+                          ProfileMenuItem(
+                            iconTitle: TablerIcons.user,
+                            title: 'Profil',
+                            onTap: () {
+                              TopSnackBarWidget.showInfoSnackBar(
+                                  context, "Fitur ini sedang on progress ya");
+                            },
+                          ),
+                          ProfileMenuItem(
+                            iconTitle: TablerIcons.bowl,
+                            title: 'Pesanan Saya',
+                            onTap: () {
+                              TopSnackBarWidget.showInfoSnackBar(
+                                  context, "Fitur ini sedang on progress ya");
+                            },
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  CustomProfileSection(
-                    title: 'Pengaturan',
-                    items: [
-                      ProfileMenuItem(
-                        iconTitle: TablerIcons.settings,
-                        title: "Privasi & Keamanan",
-                        onTap: () {
-                          TopSnackBarWidget.showInfoSnackBar(
-                             context, "Fitur ini sedang on progress ya");
-                        },
-                      ),
-                      ProfileMenuItem(
+                      const SizedBox(height: 24),
+                      CustomProfileSection(
+                        title: 'Pengaturan',
+                        items: [
+                          ProfileMenuItem(
+                            iconTitle: TablerIcons.settings,
+                            title: "Privasi & Keamanan",
+                            onTap: () {
+                              TopSnackBarWidget.showInfoSnackBar(
+                                  context, "Fitur ini sedang on progress ya");
+                            },
+                          ),
+                          ProfileMenuItem(
                             iconTitle: TablerIcons.help,
-                        title: "Bantuan",
-                        onTap: () {
-                          TopSnackBarWidget.showInfoSnackBar(
-                           context, "Fitur ini sedang on progress ya");
-                        },
+                            title: "Bantuan",
+                            onTap: () {
+                              TopSnackBarWidget.showInfoSnackBar(
+                                  context, "Fitur ini sedang on progress ya");
+                            },
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 24),
+                      CustomProfileSection(
+                        title: 'Lainnya',
+                        items: [
+                          ProfileMenuItem(
+                            iconTitle: TablerIcons.file_description,
+                            title: "Syarat & Ketentuan",
+                            onTap: () {
+                              TopSnackBarWidget.showInfoSnackBar(
+                                  context, "Fitur ini sedang on progress ya");
+                            },
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 24),
+                      Center(
+                        child: TextButton(
+                          onPressed: () {
+                            TopSnackBarWidget.showInfoSnackBar(
+                                context, "Fitur ini sedang on progress ya");
+                          },
+                          child: Text(
+                            "Logout",
+                            style: TextStyles.boldBodyLarge(context)
+                                ?.copyWith(color: ColorStyles.white),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 50),
                     ],
                   ),
-                  const SizedBox(height: 24),
-                  CustomProfileSection(
-                    title: 'Lainnya',
-                    items: [
-                      ProfileMenuItem(
-                        iconTitle: TablerIcons.file_description,
-                        title: "Syarat & Ketentuan",
-                        onTap: () {
-                          TopSnackBarWidget.showInfoSnackBar(
-                             context, "Fitur ini sedang on progress ya");
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 24),
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        TopSnackBarWidget.showInfoSnackBar(
-                            context, "Fitur ini sedang on progress ya");
-                      },
-                      child: Text(
-                        "Logout",
-                        style: TextStyles.boldBodyLarge(context)
-                            ?.copyWith(color: ColorStyles.white),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ],

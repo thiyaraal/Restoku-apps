@@ -15,7 +15,7 @@ class ItemMenuCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String imageUrl = category.toLowerCase() == 'foods'
+    String photoImage = category.toLowerCase() == 'foods'
         ? ImageNetwork.foods
         : ImageNetwork.drinks;
 
@@ -43,7 +43,7 @@ class ItemMenuCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
-                  imageUrl,
+                  photoImage,
                   width: 100,
                   height: 100,
                   fit: BoxFit.cover,
@@ -56,7 +56,7 @@ class ItemMenuCard extends StatelessWidget {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             menuName,
-            style: TextStyles.regularBodyLarge(context)?.copyWith(
+            style: TextStyles.regularBodyMedium(context)?.copyWith(
               color: ColorStyles.white,
             ),
             softWrap: true,
