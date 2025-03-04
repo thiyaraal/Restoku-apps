@@ -5,7 +5,7 @@ import 'package:restoku_app/features/profile/services/theme_provider.dart';
 
 class CustomDecorations {
   static BoxDecoration backgroundDecoration(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final themeProvider = context.watch<ThemeProvider>();
 
     return BoxDecoration(
       gradient: themeProvider.isDarkMode
@@ -25,7 +25,7 @@ class CustomDecorations {
   }
 
   static BoxDecoration contentDecoration(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
+    final themeProvider = context.watch<ThemeProvider>();
 
     return BoxDecoration(
       color: themeProvider.isDarkMode ? ColorStyles.tertiary : Colors.white,
@@ -36,28 +36,24 @@ class CustomDecorations {
   }
 
   static Color darkThemeColor(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
+    final themeProvider = context.watch<ThemeProvider>();
     return themeProvider.isDarkMode ? ColorStyles.tertiary : ColorStyles.white;
   }
 
   static Color darkThemeTextColor(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
+    final themeProvider = context.watch<ThemeProvider>();
     return themeProvider.isDarkMode ? ColorStyles.black : ColorStyles.primary;
   }
 
   static Color darkThemeButtonColor(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
+    final themeProvider = context.watch<ThemeProvider>();
     return themeProvider.isDarkMode
         ? ColorStyles.tertiary
         : ColorStyles.primary;
   }
 
   static Color darkThemeBottomNavigationColor(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context, listen: false);
-
+    final themeProvider = context.watch<ThemeProvider>();
     return themeProvider.isDarkMode ? ColorStyles.black : ColorStyles.white;
   }
 }

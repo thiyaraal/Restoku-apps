@@ -5,7 +5,6 @@ import 'package:restoku_app/core/constants/color_style.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/features/profile/services/theme_provider.dart';
 
-
 class BottomNavbarWidget extends StatelessWidget {
   final int currentIndex;
   final Function(int) onTap;
@@ -34,6 +33,10 @@ class BottomNavbarWidget extends StatelessWidget {
             BottomNavigationBarItem(
               icon: Icon(TablerIcons.building_store),
               label: 'Resto',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(TablerIcons.heart),
+              label: 'Favorite',
             ),
             BottomNavigationBarItem(
               icon: Icon(TablerIcons.user),

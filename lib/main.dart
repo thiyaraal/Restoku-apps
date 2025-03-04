@@ -4,6 +4,7 @@ import 'package:restoku_app/core/helpers/app_routes.dart';
 import 'package:restoku_app/core/helpers/provider.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

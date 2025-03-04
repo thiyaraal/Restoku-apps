@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:restoku_app/core/constants/color_style.dart';
 import 'package:restoku_app/core/constants/image_network.dart';
 import 'package:restoku_app/core/constants/text_style.dart';
+import 'package:restoku_app/core/helpers/app_routes.dart';
+import 'package:restoku_app/core/helpers/shared_preferences.dart';
 import 'package:restoku_app/core/widgets/custom/app_bar.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/snackbar/top_snackbar.dart';
@@ -29,14 +31,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: Column(
           children: [
             const SizedBox(height: 50),
-
-            
             AppBarWidget(onPressed: themeProvider.toggleTheme),
-
-            
             Expanded(
               child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(), 
+                physics: const BouncingScrollPhysics(),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Column(
@@ -111,9 +109,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       const SizedBox(height: 24),
                       Center(
                         child: TextButton(
-                          onPressed: () {
-                            TopSnackBarWidget.showInfoSnackBar(
-                                context, "Fitur ini sedang on progress ya");
+                          onPressed: () async {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, AppRoutes.login, (route) => false);
                           },
                           child: Text(
                             "Logout",

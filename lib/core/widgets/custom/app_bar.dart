@@ -3,10 +3,18 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:restoku_app/core/constants/text_style.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 
-class AppBarWidget extends StatelessWidget {
+class AppBarWidget extends StatefulWidget {
+  final double? fontSize;
+  final String? title;
   final void Function() onPressed;
-  const AppBarWidget({super.key, required this.onPressed});
+  const AppBarWidget(
+      {super.key, required this.onPressed, this.title, this.fontSize});
 
+  @override
+  State<AppBarWidget> createState() => _AppBarWidgetState();
+}
+
+class _AppBarWidgetState extends State<AppBarWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -17,10 +25,15 @@ class AppBarWidget extends StatelessWidget {
         children: [
           Flexible(
             child: Text(
-              'Restoku!',
-              style: TextStyles.regularDisplaySmall(context)
-                  ?.copyWith(color: CustomDecorations.darkThemeColor(context)),
+              // tittle ?? 'Restoku!',
+
+              widget.title ?? 'Restoku!',
+
+              style: TextStyles.regularDisplaySmall(context)?.copyWith(
+                  fontSize: widget.fontSize ?? 36,
+                  color: CustomDecorations.darkThemeColor(context)),
               overflow: TextOverflow.ellipsis,
+
               maxLines: 1,
               softWrap: false,
             ),
@@ -28,7 +41,7 @@ class AppBarWidget extends StatelessWidget {
           IconButton(
             color: CustomDecorations.darkThemeColor(context),
             icon: const Icon(TablerIcons.sun),
-            onPressed: onPressed,
+            onPressed: widget.onPressed,
           ),
         ],
       ),

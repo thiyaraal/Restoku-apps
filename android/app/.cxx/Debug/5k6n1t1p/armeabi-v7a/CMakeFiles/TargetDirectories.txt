@@ -1,0 +1,2 @@
+D:/projects/sumission II final/Restoku-apps/android/app/.cxx/Debug/5k6n1t1p/armeabi-v7a/CMakeFiles/edit_cache.dir
+D:/projects/sumission II final/Restoku-apps/android/app/.cxx/Debug/5k6n1t1p/armeabi-v7a/CMakeFiles/rebuild_cache.dir

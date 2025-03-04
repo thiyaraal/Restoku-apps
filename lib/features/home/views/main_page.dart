@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:restoku_app/features/favorite/views/favorite_screen.dart';
 import 'package:restoku_app/features/home/views/home_screen.dart';
 import 'package:restoku_app/features/home/views/widgets/bottom_navbar.dart';
 import 'package:restoku_app/features/order/views/resto_list.dart';
@@ -37,7 +38,9 @@ class _MainScreenState extends State<MainScreen> {
       case 1:
         return RestoListScreen();
       case 2:
-        return ProfileScreen();
+        return FavoriteScreen();
+      case 3:
+        return const ProfileScreen();
       default:
         return const HomeScreen();
     }
