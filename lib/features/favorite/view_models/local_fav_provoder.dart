@@ -13,15 +13,15 @@ class FavoriteProvider extends ChangeNotifier {
   List<FavoriteRestaurant> _favorites = [];
   List<FavoriteRestaurant> get favorites => _favorites;
 
-  // **Memuat semua restoran favorit dari database**
+  
   Future<void> loadFavorites() async {
     _favorites = await _service.getAllFavorites();
-    notifyListeners(); // 🔴 Memastikan UI diperbarui setelah memuat data
+    notifyListeners(); 
   }
 
-  // **Tambah atau hapus restoran dari favorit**
+  
   Future<void> toggleFavorite(FavoriteRestaurant restaurant) async {
-    // Pastikan ID tidak null sebelum melakukan operasi database
+    
     if (restaurant.id!.isEmpty) {
       debugPrint("Invalid restoId: ${restaurant.id}");
       return;
@@ -37,10 +37,10 @@ class FavoriteProvider extends ChangeNotifier {
       _favorites.add(restaurant);
     }
 
-    notifyListeners(); // 🔴 Memastikan UI diperbarui setelah perubahan favorit
+    notifyListeners(); 
   }
 
-  // **Cek apakah restoran ada di favorit**
+  
   bool isRestaurantFavorite(String id) {
     return _favorites.any((restaurant) => restaurant.id == id);
   }

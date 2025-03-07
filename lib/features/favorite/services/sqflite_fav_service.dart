@@ -32,7 +32,7 @@ class SqliteService {
     );
   }
 
-  /// **📌 Tambahkan restoran ke favorit**
+  
   Future<void> insertFavorite(FavoriteRestaurant restaurant) async {
     try {
       final db = await _initializeDb();
@@ -46,7 +46,7 @@ class SqliteService {
     }
   }
 
-  /// **📌 Ambil semua restoran favorit dari database**
+  
   Future<List<FavoriteRestaurant>> getAllFavorites() async {
     try {
       final db = await _initializeDb();
@@ -59,7 +59,7 @@ class SqliteService {
     }
   }
 
-  /// **📌 Cek apakah restoran sudah ada di daftar favorit**
+  
   Future<bool> isFavorite(String id) async {
     try {
       final db = await _initializeDb();
@@ -76,7 +76,7 @@ class SqliteService {
     }
   }
 
-  /// **📌 Hapus restoran dari daftar favorit**
+  
   Future<void> removeFavorite(String id) async {
     try {
       final db = await _initializeDb();

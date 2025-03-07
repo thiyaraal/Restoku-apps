@@ -9,6 +9,7 @@ import 'package:restoku_app/core/helpers/shared_preferences.dart';
 import 'package:restoku_app/core/widgets/custom/app_bar.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/snackbar/top_snackbar.dart';
+import 'package:restoku_app/features/notification/view_models/local_notification_provider.dart';
 import 'package:restoku_app/features/profile/services/theme_provider.dart';
 import 'package:restoku_app/features/profile/views/widgets/profile_header.dart';
 import 'package:restoku_app/features/profile/views/widgets/profile_menu_item.dart';
@@ -121,6 +122,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         ),
                       ),
                       const SizedBox(height: 50),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await _requestPermission();
+                        },
+                        child: Consumer<LocalNotificationProvider>(
+                          builder: (context, value, child) {
+                            return Text(
+                              "Request permission! (${value.permission})",
+                              textAlign: TextAlign.center,
+                            );
+                          },
+                        ),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          await _showNotification();
+                        },
+                        child: const Text(
+                          "Show notification with payload and custom sound",
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -130,5 +153,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
+  }
+
+  Future<void> _showNotification() async {
+    context.read<LocalNotificationProvider>().showNotification();
+  }
+
+  Future<void> _requestPermission() async {
+    context.read<LocalNotificationProvider>().requestPermissions();
   }
 }

@@ -5,27 +5,36 @@ import 'package:restoku_app/core/helpers/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+
+  String route = AppRoutes.main;
+
+  runApp(
+    MultiProvider(
+      providers: AppProviders.getProviders(),
+      child: App(
+        initialRoute: route,
+      ),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class App extends StatelessWidget {
+  final String initialRoute;
+
+  const App({super.key, required this.initialRoute});
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: AppProviders.getProviders(),
-      child: MaterialApp(
-        title: 'Worth-T',
-        theme: ThemeData(
-          brightness: Brightness.light,
-          primarySwatch: Colors.blue,
-          scaffoldBackgroundColor: Colors.white,
-        ),
-        initialRoute: AppRoutes.main,
-        onGenerateRoute: AppRoutes.generateRoute,
-        debugShowCheckedModeBanner: false,
+    return MaterialApp(
+      title: 'GoResto!',
+      theme: ThemeData(
+        brightness: Brightness.light,
+        primarySwatch: Colors.blue,
+        scaffoldBackgroundColor: Colors.white,
       ),
+      initialRoute: initialRoute,
+      onGenerateRoute: AppRoutes.generateRoute,
+      debugShowCheckedModeBanner: false,
     );
   }
 }

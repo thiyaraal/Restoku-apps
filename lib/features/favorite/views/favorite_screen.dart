@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:restoku_app/core/constants/image_network.dart';
 import 'package:restoku_app/core/helpers/app_routes.dart';
 import 'package:restoku_app/core/widgets/custom/app_bar.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';

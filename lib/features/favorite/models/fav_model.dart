@@ -13,7 +13,7 @@ class FavoriteRestaurant {
     required this.rating,
   });
 
-  // Konversi data ke format JSON untuk disimpan di SQLite
+  
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -24,7 +24,7 @@ class FavoriteRestaurant {
     };
   }
 
-  // Konversi dari format JSON ke objek `FavoriteRestaurant`
+  
   factory FavoriteRestaurant.fromJson(Map<String, dynamic> json) {
     return FavoriteRestaurant(
       id: json['id'] as String?,

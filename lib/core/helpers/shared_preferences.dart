@@ -13,7 +13,7 @@ class SharedPrefsHelper {
     return prefs.getBool(themeKey) ?? false;
   }
 
-  // clear  all shared preferences
+  
   static Future<void> clearAll() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.clear();

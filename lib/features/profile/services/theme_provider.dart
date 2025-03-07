@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:restoku_app/core/helpers/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider with ChangeNotifier {
