@@ -34,8 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final provider = Provider.of<RestaurantProvider>(context);
 
-    return Scaffold(
-      body: Container(
+    return  Container(
         decoration: CustomDecorations.backgroundDecoration(context),
         child: Column(
           children: [
@@ -66,25 +65,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 width: double.infinity,
                 decoration: CustomDecorations.contentDecoration(context),
                 padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BannerCard(
-                      actionButton: () {
-                        context.goNamed('/detail_resto');
-                      },
-                      bigTitle: 'DISC 50% OFF',
-                      describ: 'Exclusive Promo for Your First Purchase!',
-                      textButton: 'Order Now',
-                      title: 'Discount today only!',
-                    ),
-                    const SizedBox(height: 20),
-                    Text(
-                      'Popular Restaurants',
-                      style: TextStyles.regularHeadlineSmall(context),
-                    ),
-                    Expanded(
-                      child: Consumer<RestaurantProvider>(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BannerCard(
+                        actionButton: () {
+                          context.goNamed('/detail_resto');
+                        },
+                        bigTitle: 'DISC 50% OFF',
+                        describ: 'Exclusive Promo for Your First Purchase!',
+                        textButton: 'Order Now',
+                        title: 'Discount today only!',
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        'Popular Restaurants',
+                        style: TextStyles.regularHeadlineSmall(context),
+                      ),
+                      const SizedBox(height: 10),
+                      Consumer<RestaurantProvider>(
                         builder: (context, provider, child) {
                           if (provider.isLoading) {
                             return const Center(
@@ -92,18 +92,22 @@ class _HomeScreenState extends State<HomeScreen> {
                           } else if (provider.error != null) {
                             return Center(child: Text(provider.error!));
                           } else if (provider.filteredRestaurants.isEmpty) {
-                            return Center(child: BadNetworkWidget(
-                              onTap: () {
-                                provider.fetchRestaurants();
-                              },
-                            ));
+                            return Center(
+                              child: BadNetworkWidget(
+                                onTap: () {
+                                  provider.fetchRestaurants();
+                                },
+                              ),
+                            );
                           }
-
+      
                           return ListView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
                             itemCount: provider.filteredRestaurants.length,
                             itemBuilder: (context, index) {
                               final resto = provider.filteredRestaurants[index];
-
+      
                               return RestoCard(
                                 restoId: resto.id ?? '',
                                 actionCard: () {
@@ -136,14 +140,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

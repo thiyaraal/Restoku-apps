@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:provider/provider.dart';
@@ -6,7 +7,7 @@ import 'package:restoku_app/features/profile/services/theme_provider.dart';
 import 'package:restoku_app/main.dart';
 import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
 
-import 'provider/restaurant_provoder_test.mocks.dart';
+import '../provider/restaurant_provider_test.mocks.dart';
 
 @GenerateMocks([RestaurantServices])
 void main() {
@@ -25,12 +26,16 @@ void main() {
               create: (_) => RestaurantProvider(mockService)),
           ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ],
-        child: const App(initialRoute: ''),
+        child: const App(initialRoute: '/'),
       ),
     );
 
     await tester.pumpAndSettle();
 
-    expect(find.text('Restoku'), findsOneWidget);
+    debugPrint(tester.widgetList(find.byType(Text)).toString());
+
+    expect(find.byType(Scaffold), findsOneWidget);
+
+    expect(find.text('Popular Restaurants'), findsOneWidget);
   });
 }

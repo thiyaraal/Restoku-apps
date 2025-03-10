@@ -19,8 +19,7 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
+    return Container(
         decoration: CustomDecorations.backgroundDecoration(context),
         child: Column(
           children: [
@@ -94,7 +93,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
           ],
         ),
-      ),
-    );
+      );
   }
 }

@@ -7,7 +7,6 @@ import 'package:restoku_app/core/helpers/provider.dart' as AppProviders;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-
   String route = AppRoutes.main;
 
   runApp(
@@ -23,7 +22,7 @@ void main() async {
 class App extends StatelessWidget {
   final String initialRoute;
 
-  const App({super.key, required this.initialRoute});
+  const App({super.key, this.initialRoute = '/'});
 
   @override
   Widget build(BuildContext context) {

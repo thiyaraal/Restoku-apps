@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restoku_app/features/favorite/views/favorite_screen.dart';
+import 'package:restoku_app/features/home/views/not_found_screen.dart';
 import 'package:restoku_app/features/home/views/home_screen.dart';
 import 'package:restoku_app/features/home/views/main_page.dart';
 import 'package:restoku_app/features/home/views/search_screen.dart';
@@ -21,7 +22,6 @@ class AppRoutes {
   static const String detailProfile = '/detail_profile';
   static const String myOrder = '/my_order';
   static const String changeTheme = '/change_theme';
-  //helps
   static const String helps = '/helps';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -37,48 +37,65 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const HomeScreen());
 
       case detailResto:
-        final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (_) => DetailRestoScreen(
-            id: args['id'],
-            imageTag: args['imageTag'],
-            imageUrl: args['imageUrl'],
-            restoName: args['restoName'],
-            rate: args['rate'],
-          ),
-        );
+        if (settings.arguments is Map<String, dynamic>) {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (_) => DetailRestoScreen(
+              id: args['id'] ?? '',
+              imageTag: args['imageTag'] ?? '',
+              imageUrl: args['imageUrl'] ?? '',
+              restoName: args['restoName'] ?? '',
+              rate: args['rate'] ?? 0.0,
+            ),
+          );
+        }
+        return _errorRoute();
 
       case review:
-        final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (_) => ReviewScreen(
-            restaurantId: args['restaurantId'],
-          ),
-        );
+        if (settings.arguments is Map<String, dynamic>) {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (_) => ReviewScreen(
+              restaurantId: args['restaurantId'] ?? '',
+            ),
+          );
+        }
+        return _errorRoute();
+
       case search:
-        final args = settings.arguments as Map<String, dynamic>;
-        return MaterialPageRoute(
-          builder: (_) => SearchScreen(
-            query: args['query'],
-          ),
-        );
+        if (settings.arguments is Map<String, dynamic>) {
+          final args = settings.arguments as Map<String, dynamic>;
+          return MaterialPageRoute(
+            builder: (_) => SearchScreen(
+              query: args['query'] ?? '',
+            ),
+          );
+        }
+        return _errorRoute();
 
       case favorite:
         return MaterialPageRoute(builder: (_) => const FavoriteScreen());
+
       case detailProfile:
         return MaterialPageRoute(builder: (_) => const DetailProfileScreen());
 
-        case myOrder:
+      case myOrder:
         return MaterialPageRoute(builder: (_) => const MyOrderScreen());
 
-        case changeTheme:
+      case changeTheme:
         return MaterialPageRoute(builder: (_) => const ChangeThemeScreen());
 
-        case helps: 
+      case helps:
         return MaterialPageRoute(builder: (_) => const HelpScreen());
 
       default:
-        return MaterialPageRoute(builder: (_) => const HomeScreen());
+        return _errorRoute();
     }
+  }
+
+  static Route<dynamic> _errorRoute() {
+    return MaterialPageRoute(
+      builder: (_) => const NotFoundScreen(),
+    );
   }
 }

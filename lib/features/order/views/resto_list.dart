@@ -23,124 +23,119 @@ class _RestoListScreenState extends State<RestoListScreen> {
   final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-   
-    return Scaffold(
-      body: Container(
-         decoration: CustomDecorations.backgroundDecoration(context),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 50),
+    return Container(
+      decoration: CustomDecorations.backgroundDecoration(context),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SizedBox(height: 50),
           AppBarWidget(),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) {
-                      return SearchScreen(query: _searchController.text);
-                    }),
-                  );
-                },
-                child: AbsorbPointer(
-                  child: CustomTextField(
-                    controller: _searchController,
-                    hintText: 'Search Resto',
-                    prefixIcon : Icon(      TablerIcons.search,),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return SearchScreen(query: _searchController.text);
+                  }),
+                );
+              },
+              child: AbsorbPointer(
+                child: CustomTextField(
+                  controller: _searchController,
+                  hintText: 'Search Resto',
+                  prefixIcon: Icon(
+                    TablerIcons.search,
                   ),
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20.0,
-            ),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                  decoration:
-                    CustomDecorations.contentDecoration(context), 
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 12.0),
-                      child: Text(
-                        'All Resto',
-                        style: TextStyles.regularHeadlineSmall(context),
-                      ),
+          ),
+          const SizedBox(
+            height: 20.0,
+          ),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: CustomDecorations.contentDecoration(context),
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Text(
+                      'All Resto',
+                      style: TextStyles.regularHeadlineSmall(context),
                     ),
-                    Expanded(
-                      child: Consumer<RestaurantProvider>(
-                        builder: (context, provider, child) {
-                          if (provider.isLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (provider.error != null) {
-                            return Center(child: Text(provider.error!));
-                          } else if (provider.restaurants == null ||
-                              provider.restaurants!.restaurants!.isEmpty) {
-                            return Center(child: BadNetworkWidget(
-                              onTap: () {
-                                provider.fetchRestaurants();
-                              },
-                            ));
-                          }
-
-                          return ListView.builder(
-                            itemCount:
-                                provider.restaurants!.restaurants!.length,
-                            itemBuilder: (context, index) {
-                              final resto =
-                                  provider.restaurants!.restaurants![index];
-
-                              return RestoCard(
-                                restoId: resto.id ??
-                                    '', 
-                                actionCard: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) {
-                                        return DetailRestoScreen(
-                                          rate: resto.rating ?? 0.0,
-                                          restoName: resto.name ??
-                                              'Unknown Restaurant',
-                                          id: resto.id ?? '',
-                                          imageTag:
-                                              'hero-image-${resto.id}', 
-                                          imageUrl:
-                                              ImageNetwork.getRestaurantImage(
-                                            resto.pictureId,
-                                            resolution: 'medium',
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  );
-                                },
-                                restoAddress: resto.city ?? 'Unknown Location',
-                                restoImage: ImageNetwork.getRestaurantImage(
-                                  resto.pictureId,
-                                  resolution: 'medium',
-                                ),
-                                restoName: resto.name ?? 'Unknown Name',
-                                restoRate: resto.rating?.toString() ?? '0.0',
-                              );
+                  ),
+                  Expanded(
+                    child: Consumer<RestaurantProvider>(
+                      builder: (context, provider, child) {
+                        if (provider.isLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (provider.error != null) {
+                          return Center(child: Text(provider.error!));
+                        } else if (provider.restaurants == null ||
+                            provider.restaurants!.restaurants!.isEmpty) {
+                          return Center(child: BadNetworkWidget(
+                            onTap: () {
+                              provider.fetchRestaurants();
                             },
-                          );
-                        },
-                      ),
+                          ));
+                        }
+
+                        return ListView.builder(
+                          itemCount: provider.restaurants!.restaurants!.length,
+                          itemBuilder: (context, index) {
+                            final resto =
+                                provider.restaurants!.restaurants![index];
+
+                            return RestoCard(
+                              restoId: resto.id ?? '',
+                              actionCard: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return DetailRestoScreen(
+                                        rate: resto.rating ?? 0.0,
+                                        restoName:
+                                            resto.name ?? 'Unknown Restaurant',
+                                        id: resto.id ?? '',
+                                        imageTag: 'hero-image-${resto.id}',
+                                        imageUrl:
+                                            ImageNetwork.getRestaurantImage(
+                                          resto.pictureId,
+                                          resolution: 'medium',
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              restoAddress: resto.city ?? 'Unknown Location',
+                              restoImage: ImageNetwork.getRestaurantImage(
+                                resto.pictureId,
+                                resolution: 'medium',
+                              ),
+                              restoName: resto.name ?? 'Unknown Name',
+                              restoRate: resto.rating?.toString() ?? '0.0',
+                            );
+                          },
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

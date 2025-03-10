@@ -5,8 +5,7 @@ import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
 import 'package:restoku_app/features/home/services/get_restaurant_service.dart';
 import 'package:restoku_app/features/home/models/restaurant_model.dart';
 
-import 'restaurant_provoder_test.mocks.dart';
-
+import 'restaurant_provider_test.mocks.dart';
 
 @GenerateMocks([RestaurantServices])
 void main() {
@@ -16,7 +15,7 @@ void main() {
   setUp(() {
     mockService = MockRestaurantServices();
 
-    // ✅ Pastikan stub tersedia sebelum provider dipanggil
+    
     when(mockService.fetchRestaurants()).thenAnswer((_) async =>
         AllRestaurantModel(
             error: false, message: "success", count: 0, restaurants: []));
@@ -26,7 +25,7 @@ void main() {
 
   test('State awal provider harus benar', () {
     expect(provider.isLoading, false);
-    expect(provider.restaurants, isNull);
+    expect(provider.restaurants, isNull); 
     expect(provider.error, isNull);
   });
 
@@ -43,7 +42,7 @@ void main() {
       ],
     );
 
-    // ✅ Simulasikan pemanggilan API berhasil
+    
     when(mockService.fetchRestaurants())
         .thenAnswer((_) async => mockRestaurants);
 
@@ -57,7 +56,7 @@ void main() {
 
   test('Harus mengembalikan kesalahan ketika pengambilan data API gagal',
       () async {
-    // ✅ Simulasikan pemanggilan API gagal
+    
     when(mockService.fetchRestaurants()).thenThrow(Exception('API Error'));
 
     await provider.fetchRestaurants();
