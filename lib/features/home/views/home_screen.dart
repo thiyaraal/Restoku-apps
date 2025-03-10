@@ -12,7 +12,6 @@ import 'package:restoku_app/core/widgets/ftext_field/custom_text_field.dart';
 import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
 import 'package:restoku_app/features/home/views/widgets/banner_card.dart';
 import 'package:restoku_app/features/home/views/widgets/resto_card.dart';
-import 'package:restoku_app/features/profile/services/theme_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,7 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<RestaurantProvider>(context);
-    final themeProvider = Provider.of<ThemeProvider>(context);
 
     return Scaffold(
       body: Container(
@@ -42,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 50),
-            AppBarWidget(onPressed: themeProvider.toggleTheme),
+            AppBarWidget(),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

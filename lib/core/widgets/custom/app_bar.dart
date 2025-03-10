@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:restoku_app/core/constants/text_style.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
+import 'package:restoku_app/features/notification/views/notif_detail.dart';
 
 class AppBarWidget extends StatefulWidget {
   final double? fontSize;
   final String? title;
-  final void Function() onPressed;
-  const AppBarWidget(
-      {super.key, required this.onPressed, this.title, this.fontSize});
+  const AppBarWidget({super.key, this.title, this.fontSize});
 
   @override
   State<AppBarWidget> createState() => _AppBarWidgetState();
@@ -39,9 +38,17 @@ class _AppBarWidgetState extends State<AppBarWidget> {
             ),
           ),
           IconButton(
-            color: CustomDecorations.darkThemeColor(context),
-            icon: const Icon(TablerIcons.sun),
-            onPressed: widget.onPressed,
+            icon: Icon(
+              TablerIcons.bell,
+              color: CustomDecorations.darkThemeColor(context),
+            ),
+            onPressed: () {
+              //detail notification
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => NotificationScreen()));
+            },
           ),
         ],
       ),

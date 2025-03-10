@@ -32,6 +32,7 @@ class ItemMenuCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
+                  // ignore: deprecated_member_use
                   color: ColorStyles.black.withOpacity(0.2),
                   blurRadius: 10,
                   offset: const Offset(0, 5),

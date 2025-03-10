@@ -11,7 +11,6 @@ import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
 import 'package:restoku_app/features/home/views/search_screen.dart';
 import 'package:restoku_app/features/home/views/widgets/resto_card.dart';
 import 'package:restoku_app/features/order/views/detail_resto.dart';
-import 'package:restoku_app/features/profile/services/theme_provider.dart';
 
 class RestoListScreen extends StatefulWidget {
   const RestoListScreen({super.key});
@@ -24,7 +23,7 @@ class _RestoListScreenState extends State<RestoListScreen> {
   final TextEditingController _searchController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
+   
     return Scaffold(
       body: Container(
          decoration: CustomDecorations.backgroundDecoration(context),
@@ -33,7 +32,7 @@ class _RestoListScreenState extends State<RestoListScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 50),
-            AppBarWidget(onPressed: themeProvider.toggleTheme),
+          AppBarWidget(),
             const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),

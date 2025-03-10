@@ -3,10 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:restoku_app/core/helpers/app_routes.dart';
 import 'package:restoku_app/core/widgets/custom/app_bar.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
-
 import 'package:restoku_app/features/favorite/view_models/local_fav_provoder.dart';
 import 'package:restoku_app/features/home/views/widgets/resto_card.dart';
-import 'package:restoku_app/features/profile/services/theme_provider.dart';
 
 class FavoriteScreen extends StatefulWidget {
   const FavoriteScreen({super.key});
@@ -26,7 +24,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Container(
         decoration: CustomDecorations.backgroundDecoration(context),
@@ -36,9 +33,9 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
               height: 48,
             ),
             AppBarWidget(
-                title: 'Favorite Restaurants',
-                fontSize: 24,
-                onPressed: themeProvider.toggleTheme),
+              title: 'Favorite Restaurants',
+              fontSize: 24,
+            ),
             const SizedBox(
               height: 20,
             ),
@@ -65,7 +62,6 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                       itemCount: provider.favorites.length,
                       itemBuilder: (context, index) {
                         final resto = provider.favorites[index];
-                        
 
                         return Padding(
                           padding: const EdgeInsets.symmetric(
@@ -80,8 +76,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                                   'id': resto.id ?? '',
                                   'imageTag': 'hero-image-${resto.id}',
                                   'imageUrl': resto.imageUrl,
-                                  'restoName':
-                                      resto.name,
+                                  'restoName': resto.name,
                                   'rate': resto.rating,
                                 },
                               );

@@ -2,9 +2,7 @@ import 'package:restoku_app/features/favorite/models/fav_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
-
 import 'package:path_provider/path_provider.dart';
-
 
 class SqliteService {
   static const String _databaseName = 'favorites.db';
@@ -32,7 +30,6 @@ class SqliteService {
     );
   }
 
-  
   Future<void> insertFavorite(FavoriteRestaurant restaurant) async {
     try {
       final db = await _initializeDb();
@@ -41,25 +38,26 @@ class SqliteService {
         restaurant.toJson(),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
+    // ignore: empty_catches
     } catch (e) {
-     print("Error inserting favorite: $e");
+    
     }
   }
 
-  
   Future<List<FavoriteRestaurant>> getAllFavorites() async {
     try {
       final db = await _initializeDb();
       final results = await db.query(_favoriteTable, orderBy: "name");
 
-      return results.map((result) => FavoriteRestaurant.fromJson(result)).toList();
+      return results
+          .map((result) => FavoriteRestaurant.fromJson(result))
+          .toList();
     } catch (e) {
-     print("Error fetching favorites: $e");
+     
       return [];
     }
   }
 
-  
   Future<bool> isFavorite(String id) async {
     try {
       final db = await _initializeDb();
@@ -71,18 +69,15 @@ class SqliteService {
       );
       return results.isNotEmpty;
     } catch (e) {
-     print("Error checking favorite: $e");
       return false;
     }
   }
 
-  
   Future<void> removeFavorite(String id) async {
     try {
       final db = await _initializeDb();
       await db.delete(_favoriteTable, where: "id = ?", whereArgs: [id]);
-    } catch (e) {
-     print("Error removing favorite: $e");
-    }
+      // ignore: empty_catches
+    } catch (e) {}
   }
 }

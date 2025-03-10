@@ -1,30 +1,36 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
+import 'package:mockito/annotations.dart';
+import 'package:provider/provider.dart';
+import 'package:restoku_app/features/home/services/get_restaurant_service.dart';
+import 'package:restoku_app/features/profile/services/theme_provider.dart';
 import 'package:restoku_app/main.dart';
+import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
 
+import 'provider/restaurant_provoder_test.mocks.dart';
+
+@GenerateMocks([RestaurantServices])
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  late MockRestaurantServices mockService;
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+  setUp(() {
+    mockService = MockRestaurantServices();
+  });
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
+  testWidgets('Menampilkan HomeScreen dengan benar',
+      (WidgetTester tester) async {
+    await tester.pumpWidget(
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+              create: (_) => RestaurantProvider(mockService)),
+          ChangeNotifierProvider(create: (_) => ThemeProvider()),
+        ],
+        child: const App(initialRoute: ''),
+      ),
+    );
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    await tester.pumpAndSettle();
+
+    expect(find.text('Restoku'), findsOneWidget);
   });
 }

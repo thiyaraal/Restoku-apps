@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:developer';
 
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;
 
   ThemeMode get themeMode => _themeMode;
-
   bool get isDarkMode => _themeMode == ThemeMode.dark;
 
   ThemeProvider() {
@@ -15,14 +15,19 @@ class ThemeProvider with ChangeNotifier {
   }
 
   void toggleTheme() async {
-    _themeMode = _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
+    _themeMode =
+        _themeMode == ThemeMode.light ? ThemeMode.dark : ThemeMode.light;
     notifyListeners();
     await _saveThemeToPrefs();
   }
 
   Future<void> _saveThemeToPrefs() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isDarkMode', _themeMode == ThemeMode.dark);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isDarkMode', _themeMode == ThemeMode.dark);
+    } catch (e) {
+      log("Error saving theme preference: $e");
+    }
   }
 
   Future<void> loadTheme() async {
@@ -32,7 +37,7 @@ class ThemeProvider with ChangeNotifier {
       _themeMode = isDark ? ThemeMode.dark : ThemeMode.light;
       notifyListeners();
     } catch (e) {
-      print("Error loading theme: $e");
+      log("Error loading theme preference: $e");
     }
   }
 }

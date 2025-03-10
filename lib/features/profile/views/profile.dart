@@ -1,16 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
-import 'package:provider/provider.dart';
-import 'package:restoku_app/core/constants/color_style.dart';
+
 import 'package:restoku_app/core/constants/image_network.dart';
-import 'package:restoku_app/core/constants/text_style.dart';
 import 'package:restoku_app/core/helpers/app_routes.dart';
-import 'package:restoku_app/core/helpers/shared_preferences.dart';
 import 'package:restoku_app/core/widgets/custom/app_bar.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
-import 'package:restoku_app/core/widgets/snackbar/top_snackbar.dart';
-import 'package:restoku_app/features/notification/view_models/local_notification_provider.dart';
-import 'package:restoku_app/features/profile/services/theme_provider.dart';
 import 'package:restoku_app/features/profile/views/widgets/profile_header.dart';
 import 'package:restoku_app/features/profile/views/widgets/profile_menu_item.dart';
 import 'package:restoku_app/features/profile/views/widgets/profile_section.dart';
@@ -25,14 +19,13 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Container(
         decoration: CustomDecorations.backgroundDecoration(context),
         child: Column(
           children: [
             const SizedBox(height: 50),
-            AppBarWidget(onPressed: themeProvider.toggleTheme),
+            AppBarWidget(),
             Expanded(
               child: SingleChildScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -47,7 +40,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         phone: "08123456789",
                         userEmail: "thiyaraal@gmai.cmom",
                         userName: "Thhiyara Al-Mawaddah",
-                        onTap: () {},
+                        onTap: () {
+                          // Navigator.pushNamed(context, AppRoutes.detailProfile);
+                        },
                       ),
                       const SizedBox(height: 16),
                       CustomProfileSection(
@@ -57,16 +52,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             iconTitle: TablerIcons.user,
                             title: 'Profil',
                             onTap: () {
-                              TopSnackBarWidget.showInfoSnackBar(
-                                  context, "Fitur ini sedang on progress ya");
+                              Navigator.pushNamed(
+                                  context, AppRoutes.detailProfile);
                             },
                           ),
                           ProfileMenuItem(
                             iconTitle: TablerIcons.bowl,
                             title: 'Pesanan Saya',
                             onTap: () {
-                              TopSnackBarWidget.showInfoSnackBar(
-                                  context, "Fitur ini sedang on progress ya");
+                              Navigator.pushNamed(context, AppRoutes.myOrder);
                             },
                           ),
                         ],
@@ -76,73 +70,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         title: 'Pengaturan',
                         items: [
                           ProfileMenuItem(
-                            iconTitle: TablerIcons.settings,
-                            title: "Privasi & Keamanan",
+                            iconTitle: TablerIcons.color_filter,
+                            title: "Ubah warna tema",
                             onTap: () {
-                              TopSnackBarWidget.showInfoSnackBar(
-                                  context, "Fitur ini sedang on progress ya");
+                              Navigator.pushNamed(
+                                context,
+                                AppRoutes.changeTheme,
+                              );
                             },
                           ),
                           ProfileMenuItem(
-                            iconTitle: TablerIcons.help,
-                            title: "Bantuan",
-                            onTap: () {
-                              TopSnackBarWidget.showInfoSnackBar(
-                                  context, "Fitur ini sedang on progress ya");
-                            },
-                          ),
+                              iconTitle: TablerIcons.help,
+                              title: "Bantuan",
+                              onTap: () {
+                                Navigator.pushNamed(context, AppRoutes.helps);
+                              }),
                         ],
-                      ),
-                      const SizedBox(height: 24),
-                      CustomProfileSection(
-                        title: 'Lainnya',
-                        items: [
-                          ProfileMenuItem(
-                            iconTitle: TablerIcons.file_description,
-                            title: "Syarat & Ketentuan",
-                            onTap: () {
-                              TopSnackBarWidget.showInfoSnackBar(
-                                  context, "Fitur ini sedang on progress ya");
-                            },
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 24),
-                      Center(
-                        child: TextButton(
-                          onPressed: () async {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, AppRoutes.login, (route) => false);
-                          },
-                          child: Text(
-                            "Logout",
-                            style: TextStyles.boldBodyLarge(context)
-                                ?.copyWith(color: ColorStyles.white),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 50),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await _requestPermission();
-                        },
-                        child: Consumer<LocalNotificationProvider>(
-                          builder: (context, value, child) {
-                            return Text(
-                              "Request permission! (${value.permission})",
-                              textAlign: TextAlign.center,
-                            );
-                          },
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          await _showNotification();
-                        },
-                        child: const Text(
-                          "Show notification with payload and custom sound",
-                          textAlign: TextAlign.center,
-                        ),
                       ),
                     ],
                   ),
@@ -153,13 +96,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
       ),
     );
-  }
-
-  Future<void> _showNotification() async {
-    context.read<LocalNotificationProvider>().showNotification();
-  }
-
-  Future<void> _requestPermission() async {
-    context.read<LocalNotificationProvider>().requestPermissions();
   }
 }

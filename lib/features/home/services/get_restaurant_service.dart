@@ -5,7 +5,7 @@ import 'package:restoku_app/features/home/models/restaurant_model.dart';
 class RestaurantServices {
   static final Dio _dio = Dio();
 
-  static Future<AllRestaurantModel?> fetchRestaurants() async {
+  Future<AllRestaurantModel?> fetchRestaurants() async {
     try {
       final response = await _dio.get(ApiDocumentations.getRestaurants);
 

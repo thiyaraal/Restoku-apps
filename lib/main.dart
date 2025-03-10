@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restoku_app/core/helpers/app_routes.dart';
-import 'package:restoku_app/core/helpers/provider.dart';
+// ignore: library_prefixes
+import 'package:restoku_app/core/helpers/provider.dart' as AppProviders;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
 
   String route = AppRoutes.main;
 

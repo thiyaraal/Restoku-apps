@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'package:provider/provider.dart';
+import 'package:restoku_app/core/constants/image_network.dart';
 import 'package:restoku_app/core/helpers/app_routes.dart';
 import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/custom/row_title_icon.dart';
@@ -86,6 +87,14 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               DescRestoWidget(
+                                restoAddress: resto.address ?? 'Unknown',
+                                restoId: resto.id ?? '0',
+                                restoImage: ImageNetwork.getRestaurantImage(
+                                  resto.pictureId,
+                                  resolution: 'medium',
+                                ),
+                                restoName: resto.name ?? 'Unknown',
+                                restoRate: (resto.rating ?? 0.0).toString(),
                                 actionReview: () {
                                   Navigator.pushNamed(
                                     context,
@@ -115,7 +124,7 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
                               Consumer<DetailRestaurantProvider>(
                                 builder: (context, provider, child) {
                                   final menuItems = provider.filteredMenus;
-                        
+
                                   return GridView.builder(
                                     physics: NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
@@ -123,13 +132,9 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
                                         const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 2,
                                       crossAxisSpacing: 10.0,
-                                       
                                       mainAxisSpacing: 10.0,
                                       childAspectRatio: 0.8,
-                                    
                                     ),
-                                    
-
                                     itemCount: menuItems.length,
                                     itemBuilder: (context, index) {
                                       final menuItem = menuItems[index];

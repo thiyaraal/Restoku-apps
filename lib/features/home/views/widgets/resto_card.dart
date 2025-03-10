@@ -42,6 +42,7 @@ class RestoCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
                 boxShadow: [
                   BoxShadow(
+                    // ignore: deprecated_member_use
                     color: Colors.black.withOpacity(0.25),
                     blurRadius: 4,
                     offset: const Offset(0, 4),
@@ -125,6 +126,7 @@ class RestoCard extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    
                     Text(
                       restoRate,
                       style: TextStyles.regularBodyLarge(context),

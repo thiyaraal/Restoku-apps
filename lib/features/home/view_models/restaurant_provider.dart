@@ -3,10 +3,10 @@ import 'package:restoku_app/features/home/models/restaurant_model.dart';
 import 'package:restoku_app/features/home/services/get_restaurant_service.dart';
 
 class RestaurantProvider with ChangeNotifier {
- 
-   
-   TextEditingController get searchController => _searchController; 
-    final TextEditingController _searchController = TextEditingController(); 
+  final RestaurantServices _restaurantServices;
+
+  TextEditingController get searchController => _searchController;
+  final TextEditingController _searchController = TextEditingController();
 
   AllRestaurantModel? _restaurants;
   bool _isLoading = false;
@@ -16,12 +16,7 @@ class RestaurantProvider with ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
 
-  RestaurantProvider() {
-    fetchRestaurants();
-  }
-
-
-
+  RestaurantProvider(this._restaurantServices);
 
   Future<void> fetchRestaurants() async {
     _isLoading = true;
@@ -29,7 +24,7 @@ class RestaurantProvider with ChangeNotifier {
     notifyListeners();
 
     try {
-      _restaurants = await RestaurantServices.fetchRestaurants();
+      _restaurants = await _restaurantServices.fetchRestaurants();
     } catch (e) {
       _error = e.toString();
     } finally {
@@ -38,7 +33,6 @@ class RestaurantProvider with ChangeNotifier {
     }
   }
 
-  
   List<Restaurant> get filteredRestaurants {
     if (_restaurants == null || _restaurants!.restaurants == null) {
       return [];
@@ -47,6 +41,4 @@ class RestaurantProvider with ChangeNotifier {
         .where((restaurant) => (restaurant.rating ?? 0) >= 4.7)
         .toList();
   }
-
-  
 }
