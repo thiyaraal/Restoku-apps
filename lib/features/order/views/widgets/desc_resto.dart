@@ -49,7 +49,6 @@ class DescRestoWidget extends StatelessWidget {
               size: 18,
             ),
             const SizedBox(width: 5),
-            
             Expanded(
               child: Text(
                 addres,
@@ -84,6 +83,7 @@ class DescRestoWidget extends StatelessWidget {
           height: 12.0,
         ),
         ExpandableText(
+          id: restoId.hashCode,
           text: description,
           style: TextStyles.regularBodyLarge(context)?.copyWith(
             color: ColorStyles.white,
@@ -114,7 +114,6 @@ class DescRestoWidget extends StatelessWidget {
               variant: ButtonVariant.secondary,
               labelText: "review",
             ),
-            
           ],
         ),
       ],

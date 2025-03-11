@@ -24,8 +24,13 @@ class IncomingAdminMessege extends StatelessWidget {
           children: [
             CircleAvatar(
               radius: 24,
-              backgroundImage: NetworkImage(
-                imageProfile,
+              backgroundColor: Colors.grey.shade300,
+              child: ClipOval(
+                child: Icon(
+                  Icons.person,
+                  size: 30,
+                  color: Colors.grey,
+                ),
               ),
             ),
             const SizedBox(
@@ -36,7 +41,8 @@ class IncomingAdminMessege extends StatelessWidget {
               children: [
                 Text(
                   dateTimeMessege,
-                  style: TextStyles.boldBodyMedium(context)?.copyWith(color: ColorStyles.white),
+                  style: TextStyles.boldBodyMedium(context)
+                      ?.copyWith(color: ColorStyles.white),
                 ),
                 const SizedBox(
                   height: 8,

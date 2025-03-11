@@ -2,26 +2,24 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:restoku_app/features/home/models/restaurant_model.dart';
 import 'package:restoku_app/features/home/services/serach_sevices.dart';
+import 'package:restoku_app/features/home/view_models/search_state.dart';
+
 
 class SearchProvider extends ChangeNotifier {
   final RestaurantService _restaurantService;
   final TextEditingController searchController = TextEditingController();
 
-  List<Map<String, dynamic>> _searchResults = [];
-  bool _isLoading = false;
-  bool _isError = false;
+  SearchState _state = SearchEmpty();
+  SearchState get state => _state;
+
   Timer? _debounce;
 
-  List<Map<String, dynamic>> get searchResults => _searchResults;
-  bool get isLoading => _isLoading;
-  bool get isError => _isError;
-
-  // Constructor default
+  
   SearchProvider() : _restaurantService = RestaurantService() {
     searchController.addListener(_onSearchChanged);
   }
 
-  // Constructor untuk testing (menggunakan mock)
+  
   SearchProvider.withService(this._restaurantService) {
     searchController.addListener(_onSearchChanged);
   }
@@ -43,26 +41,28 @@ class SearchProvider extends ChangeNotifier {
   Future<void> searchRestaurants(String query) async {
     if (query.isEmpty) return;
 
-    _isLoading = true;
-    _isError = false;
+    _state = SearchLoading();
     notifyListeners();
 
     try {
       List<Restaurant> allRestaurants =
           await _restaurantService.searchRestaurants(query);
-      _searchResults = allRestaurants
-          .map((resto) => {"restaurant": resto, "menus": []})
-          .toList();
+      if (allRestaurants.isEmpty) {
+        _state = SearchEmpty();
+      } else {
+        _state = SearchSuccess(
+          allRestaurants.map((resto) => {"restaurant": resto, "menus": []}).toList(),
+        );
+      }
     } catch (e) {
-      _isError = true;
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      _state = SearchError(e.toString());
     }
+
+    notifyListeners();
   }
 
   void _clearSearchResults() {
-    _searchResults = [];
+    _state = SearchEmpty();
     notifyListeners();
   }
 

@@ -1,47 +1,68 @@
+
 import 'package:flutter/material.dart';
 import 'package:restoku_app/features/favorite/models/fav_model.dart';
-
 import 'package:restoku_app/features/favorite/services/sqflite_fav_service.dart';
+import 'package:restoku_app/features/favorite/view_models/fav_state.dart';
 
-class FavoriteProvider extends ChangeNotifier {
+class FavoriteProvider with ChangeNotifier {
   final SqliteService _service;
+
+  FavoriteState _state = FavoriteLoading();
+  FavoriteState get state => _state;
 
   FavoriteProvider(this._service) {
     loadFavorites();
   }
 
-  List<FavoriteRestaurant> _favorites = [];
-  List<FavoriteRestaurant> get favorites => _favorites;
-
-  
   Future<void> loadFavorites() async {
-    _favorites = await _service.getAllFavorites();
-    notifyListeners(); 
+    _state = FavoriteLoading();
+    notifyListeners();
+
+    try {
+      final favorites = await _service.getAllFavorites();
+      _state = FavoriteSuccess(favorites);
+    } catch (e) {
+      _state = FavoriteError("Failed to load favorites. Please try again.");
+    }
+
+    notifyListeners();
   }
 
-  
   Future<void> toggleFavorite(FavoriteRestaurant restaurant) async {
-    
-    if (restaurant.id!.isEmpty) {
+    if (restaurant.id?.isEmpty ?? true) {
       debugPrint("Invalid restoId: ${restaurant.id}");
       return;
     }
 
-    bool isFav = await _service.isFavorite(restaurant.id!);
+    try {
+      if (_state is FavoriteSuccess) {
+        List<FavoriteRestaurant> currentFavorites =
+            List.from((state as FavoriteSuccess).favorites);
+        bool isFav = await _service.isFavorite(restaurant.id!);
 
-    if (isFav) {
-      await _service.removeFavorite(restaurant.id!);
-      _favorites.removeWhere((item) => item.id == restaurant.id);
-    } else {
-      await _service.insertFavorite(restaurant);
-      _favorites.add(restaurant);
+        if (isFav) {
+          await _service.removeFavorite(restaurant.id!);
+          currentFavorites.removeWhere((item) => item.id == restaurant.id);
+        } else {
+          await _service.insertFavorite(restaurant);
+          currentFavorites.add(restaurant);
+        }
+
+        _state = FavoriteSuccess(currentFavorites);
+      }
+    } catch (e) {
+      _state = FavoriteError("Failed to update favorite: $e");
     }
 
-    notifyListeners(); 
+    notifyListeners();
   }
 
-  
   bool isRestaurantFavorite(String id) {
-    return _favorites.any((restaurant) => restaurant.id == id);
+    if (_state is FavoriteSuccess) {
+      return (state as FavoriteSuccess)
+          .favorites
+          .any((restaurant) => restaurant.id == id);
+    }
+    return false;
   }
 }

@@ -10,6 +10,7 @@ import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/empty_content/empety_widget.dart';
 import 'package:restoku_app/core/widgets/ftext_field/custom_text_field.dart';
 import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
+import 'package:restoku_app/features/home/view_models/restaurant_state.dart';
 import 'package:restoku_app/features/home/views/widgets/banner_card.dart';
 import 'package:restoku_app/features/home/views/widgets/resto_card.dart';
 
@@ -34,80 +35,91 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final provider = Provider.of<RestaurantProvider>(context);
 
-    return  Container(
-        decoration: CustomDecorations.backgroundDecoration(context),
-        child: Column(
-          children: [
-            const SizedBox(height: 50),
-            AppBarWidget(),
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoutes.search,
-                      arguments: {'query': provider.searchController.text});
-                },
-                child: AbsorbPointer(
-                  child: CustomTextField(
-                    controller: provider.searchController,
-                    hintText: 'Resto name',
-                    prefixIcon: Icon(
-                      TablerIcons.search,
-                    ),
+    return Container(
+      decoration: CustomDecorations.backgroundDecoration(context),
+      child: Column(
+        children: [
+          const SizedBox(height: 50),
+          AppBarWidget(),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, AppRoutes.search,
+                    arguments: {'query': provider.searchController.text});
+              },
+              child: AbsorbPointer(
+                child: CustomTextField(
+                  controller: provider.searchController,
+                  hintText: 'Resto name',
+                  prefixIcon: Icon(
+                    TablerIcons.search,
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            Expanded(
-              child: Container(
-                width: double.infinity,
-                decoration: CustomDecorations.contentDecoration(context),
-                padding: const EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      BannerCard(
-                        actionButton: () {
-                          context.goNamed('/detail_resto');
-                        },
-                        bigTitle: 'DISC 50% OFF',
-                        describ: 'Exclusive Promo for Your First Purchase!',
-                        textButton: 'Order Now',
-                        title: 'Discount today only!',
-                      ),
-                      const SizedBox(height: 20),
-                      Text(
-                        'Popular Restaurants',
-                        style: TextStyles.regularHeadlineSmall(context),
-                      ),
-                      const SizedBox(height: 10),
-                      Consumer<RestaurantProvider>(
-                        builder: (context, provider, child) {
-                          if (provider.isLoading) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          } else if (provider.error != null) {
-                            return Center(child: Text(provider.error!));
-                          } else if (provider.filteredRestaurants.isEmpty) {
-                            return Center(
-                              child: BadNetworkWidget(
-                                onTap: () {
-                                  provider.fetchRestaurants();
-                                },
-                              ),
-                            );
-                          }
-      
+          ),
+          const SizedBox(height: 20),
+          Expanded(
+            child: Container(
+              width: double.infinity,
+              decoration: CustomDecorations.contentDecoration(context),
+              padding: const EdgeInsets.all(20),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    BannerCard(
+                      actionButton: () {
+                        context.goNamed('/detail_resto');
+                      },
+                      bigTitle: 'DISC 50% OFF',
+                      describ: 'Exclusive Promo for Your First Purchase!',
+                      textButton: 'Order Now',
+                      title: 'Discount today only!',
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      'Popular Restaurants',
+                      style: TextStyles.regularHeadlineSmall(context),
+                    ),
+                    const SizedBox(height: 10),
+                    Consumer<RestaurantProvider>(
+                      builder: (context, provider, child) {
+                        final state = provider.state;
+
+                        if (state is RestaurantLoading) {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        } else if (state is RestaurantError) {
+                          return Center(
+                            child: BadNetworkWidget(
+                              onTap: () {
+                                provider.fetchRestaurants();
+                              },
+                            ),
+                          );
+                        } else if (state is RestaurantSuccess &&
+                            (state.data.restaurants == null ||
+                                state.data.restaurants!.isEmpty)) {
+                          return Center(
+                            child: BadNetworkWidget(
+                              onTap: () {
+                                provider.fetchRestaurants();
+                              },
+                            ),
+                          );
+                        }
+
+                        if (state is RestaurantSuccess) {
                           return ListView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
-                            itemCount: provider.filteredRestaurants.length,
+                            itemCount: state.data.restaurants?.length ?? 0,
                             itemBuilder: (context, index) {
-                              final resto = provider.filteredRestaurants[index];
-      
+                              final resto = state.data.restaurants![index];
+
                               return RestoCard(
                                 restoId: resto.id ?? '',
                                 actionCard: () {
@@ -138,15 +150,18 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                             },
                           );
-                        },
-                      ),
-                    ],
-                  ),
+                        }
+
+                        return const SizedBox(); 
+                      },
+                    )
+                  ],
                 ),
               ),
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }

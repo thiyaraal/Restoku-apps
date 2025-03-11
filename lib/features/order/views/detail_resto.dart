@@ -8,6 +8,7 @@ import 'package:restoku_app/core/widgets/custom/row_title_icon.dart';
 import 'package:restoku_app/core/widgets/empty_content/empety_widget.dart';
 import 'package:restoku_app/core/widgets/modals/category_modals.dart';
 import 'package:restoku_app/features/order/view_models/detail_restaurant_provider.dart';
+import 'package:restoku_app/features/order/view_models/detail_state.dart';
 import 'package:restoku_app/features/order/views/widgets/desc_resto.dart';
 import 'package:restoku_app/features/order/views/widgets/image_resto_detail.dart';
 import 'package:restoku_app/features/order/views/widgets/item_menu.dart';
@@ -66,22 +67,38 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
               Expanded(
                 child: Consumer<DetailRestaurantProvider>(
                   builder: (context, provider, child) {
-                    if (provider.isLoading) {
+                    final state = provider.state;
+
+                    if (state is DetailRestaurantLoading) {
                       return const Center(child: CircularProgressIndicator());
-                    } else if (provider.error != null) {
-                      return Center(child: Text(provider.error!));
-                    } else if (provider.detail?.restaurant == null) {
-                      return Center(child: BadNetworkWidget(
-                        onTap: () {
-                          provider.fetchDetail(widget.id);
-                        },
-                      ));
                     }
 
-                    final resto = provider.detail!.restaurant!;
+                    if (state is DetailRestaurantError) {
+                      return Center(
+                        child: BadNetworkWidget(
+                          onTap: () {
+                            provider.fetchDetail(widget.id);
+                          },
+                        ),
+                      );
+                    }
 
-                    return Padding(
-                        padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+                    if (state is DetailRestaurantSuccess &&
+                        state.detail.restaurant == null) {
+                      return Center(
+                        child: BadNetworkWidget(
+                          onTap: () {
+                            provider.fetchDetail(widget.id);
+                          },
+                        ),
+                      );
+                    }
+
+                    if (state is DetailRestaurantSuccess) {
+                      final resto = state.detail.restaurant!;
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: SingleChildScrollView(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,7 +117,7 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
                                     context,
                                     AppRoutes.review,
                                     arguments: {
-                                      'restaurantId': resto.id ?? '0',
+                                      'restaurantId': resto.id ?? '0'
                                     },
                                   );
                                 },
@@ -125,8 +142,20 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
                                 builder: (context, provider, child) {
                                   final menuItems = provider.filteredMenus;
 
+                                  if (menuItems.isEmpty) {
+                                    return const Center(
+                                      child: Text(
+                                        "No menu available",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    );
+                                  }
+
                                   return GridView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
                                     shrinkWrap: true,
                                     gridDelegate:
                                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -148,7 +177,11 @@ class _DetailRestoScreenState extends State<DetailRestoScreen> {
                               ),
                             ],
                           ),
-                        ));
+                        ),
+                      );
+                    }
+
+                    return const SizedBox();
                   },
                 ),
               ),

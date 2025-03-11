@@ -7,9 +7,9 @@ import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/empty_content/serach_empty.dart';
 import 'package:restoku_app/core/widgets/ftext_field/custom_text_field.dart';
 import 'package:restoku_app/features/home/models/restaurant_model.dart';
+import 'package:restoku_app/features/home/view_models/search_state.dart';
 import 'package:restoku_app/features/home/view_models/serach_provider.dart';
 import 'package:restoku_app/features/home/views/widgets/list_serach.dart';
-
 
 class SearchScreen extends StatelessWidget {
   final String query;
@@ -51,17 +51,19 @@ class SearchScreen extends StatelessWidget {
                 Expanded(
                   child: Consumer<SearchProvider>(
                     builder: (context, provider, _) {
-                      if (provider.isLoading) {
+                      final state = provider.state;
+
+                      if (state is SearchLoading) {
                         return const Center(child: CircularProgressIndicator());
-                      } else if (provider.isError) {
+                      } else if (state is SearchError) {
                         return const Center(child: Text("Failed to load data"));
-                      } else if (provider.searchResults.isEmpty) {
+                      } else if (state is SearchEmpty) {
                         return Center(child: SeacrhEmptyWidget());
-                      } else {
+                      } else if (state is SearchSuccess) {
                         return ListView.builder(
-                          itemCount: provider.searchResults.length,
+                          itemCount: state.searchResults.length,
                           itemBuilder: (context, index) {
-                            final result = provider.searchResults[index];
+                            final result = state.searchResults[index];
                             final Restaurant resto = result["restaurant"];
                             final List<String> menus =
                                 List<String>.from(result["menus"]);
@@ -74,7 +76,7 @@ class SearchScreen extends StatelessWidget {
                                 city: resto.city ?? "Unknown City",
                                 menus: menus,
                                 isLastItem:
-                                    index == provider.searchResults.length - 1,
+                                    index == state.searchResults.length - 1,
                                 onTap: () {
                                   Navigator.pushNamed(
                                     context,
@@ -98,9 +100,11 @@ class SearchScreen extends StatelessWidget {
                           },
                         );
                       }
+
+                      return const SizedBox(); 
                     },
                   ),
-                ),
+                )
               ],
             ),
           ),

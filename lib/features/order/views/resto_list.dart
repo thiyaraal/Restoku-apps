@@ -8,6 +8,7 @@ import 'package:restoku_app/core/widgets/custom/theme_widget.dart';
 import 'package:restoku_app/core/widgets/empty_content/empety_widget.dart';
 import 'package:restoku_app/core/widgets/ftext_field/custom_text_field.dart';
 import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
+import 'package:restoku_app/features/home/view_models/restaurant_state.dart';
 import 'package:restoku_app/features/home/views/search_screen.dart';
 import 'package:restoku_app/features/home/views/widgets/resto_card.dart';
 import 'package:restoku_app/features/order/views/detail_resto.dart';
@@ -75,59 +76,82 @@ class _RestoListScreenState extends State<RestoListScreen> {
                   Expanded(
                     child: Consumer<RestaurantProvider>(
                       builder: (context, provider, child) {
-                        if (provider.isLoading) {
+                        final state = provider.state;
+
+                        if (state is RestaurantLoading) {
                           return const Center(
                               child: CircularProgressIndicator());
-                        } else if (provider.error != null) {
-                          return Center(child: Text(provider.error!));
-                        } else if (provider.restaurants == null ||
-                            provider.restaurants!.restaurants!.isEmpty) {
-                          return Center(child: BadNetworkWidget(
+                        }
+
+                        if (state is RestaurantError) {
+                          return Center(
+                            child: BadNetworkWidget(
+                              onTap: () {
+                                provider.fetchRestaurants();
+                              },
+                            ),
+                          );
+                        }
+
+                        if (state is RestaurantSuccess &&
+                            (state.data.restaurants?.isEmpty ?? true)) {
+                          return Center(
+                            child: BadNetworkWidget(
+                              onTap: () {
+                                provider.fetchRestaurants();
+                              },
+                            ),
+                          );
+                        }
+
+                        if (state is RestaurantSuccess) {
+                          return ListView.builder(
+                            itemCount: state.data.restaurants?.length ?? 0,
+                            itemBuilder: (context, index) {
+                              final resto = state.data.restaurants![index];
+
+                              return RestoCard(
+                                restoId: resto.id ?? '',
+                                actionCard: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) {
+                                        return DetailRestoScreen(
+                                          rate: resto.rating ?? 0.0,
+                                          restoName: resto.name ??
+                                              'Unknown Restaurant',
+                                          id: resto.id ?? '',
+                                          imageTag: 'hero-image-${resto.id}',
+                                          imageUrl:
+                                              ImageNetwork.getRestaurantImage(
+                                            resto.pictureId,
+                                            resolution: 'medium',
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  );
+                                },
+                                restoAddress: resto.city ?? 'Unknown Location',
+                                restoImage: ImageNetwork.getRestaurantImage(
+                                  resto.pictureId,
+                                  resolution: 'medium',
+                                ),
+                                restoName: resto.name ?? 'Unknown Name',
+                                restoRate: resto.rating?.toString() ?? '0.0',
+                              );
+                            },
+                          );
+                        }
+
+                        return Center(
+                          child: BadNetworkWidget(
                             onTap: () {
                               provider.fetchRestaurants();
                             },
-                          ));
-                        }
-
-                        return ListView.builder(
-                          itemCount: provider.restaurants!.restaurants!.length,
-                          itemBuilder: (context, index) {
-                            final resto =
-                                provider.restaurants!.restaurants![index];
-
-                            return RestoCard(
-                              restoId: resto.id ?? '',
-                              actionCard: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) {
-                                      return DetailRestoScreen(
-                                        rate: resto.rating ?? 0.0,
-                                        restoName:
-                                            resto.name ?? 'Unknown Restaurant',
-                                        id: resto.id ?? '',
-                                        imageTag: 'hero-image-${resto.id}',
-                                        imageUrl:
-                                            ImageNetwork.getRestaurantImage(
-                                          resto.pictureId,
-                                          resolution: 'medium',
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                );
-                              },
-                              restoAddress: resto.city ?? 'Unknown Location',
-                              restoImage: ImageNetwork.getRestaurantImage(
-                                resto.pictureId,
-                                resolution: 'medium',
-                              ),
-                              restoName: resto.name ?? 'Unknown Name',
-                              restoRate: resto.rating?.toString() ?? '0.0',
-                            );
-                          },
-                        );
+                          ),
+                        ); 
                       },
                     ),
                   ),

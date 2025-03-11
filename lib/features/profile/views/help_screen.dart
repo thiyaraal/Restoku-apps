@@ -21,73 +21,69 @@ class HelpScreen extends StatelessWidget {
       child: Scaffold(
         body: Container(
           decoration: CustomDecorations.backgroundDecoration(context),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                CustomHeader(
-           title: 'Bantuan',
-             ),
-                const SizedBox(height: 20),
-                Text(
-                  'Kamis, 21 April 2024',
-                  style: TextStyles.regularBodyMedium(context)?.copyWith(
-                    color: ColorStyles.white,
-                  ),
+          child: Column(
+            children: [
+              CustomHeader(
+                title: 'Bantuan',
+              ),
+              Text(
+                'Kamis, 21 April 2024',
+                style: TextStyles.regularBodyMedium(context)?.copyWith(
+                  color: ColorStyles.white,
                 ),
-                const SizedBox(height: 12),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: chatProvider.chatData.length,
-                    itemBuilder: (context, index) {
-                      final chat = chatProvider.chatData[index];
-                      final bool isSentByUser = chat['isSentByUser'] ?? false;
-
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 24.0),
-                        child: isSentByUser
-                            ? IncomingAdminMessege(
-                                imageProfile: chat['profile'],
-                                dateTimeMessege: chat['time'],
-                                incomingMessege: chat['message'],
-                              )
-                            : SentMessege(
-                                dateSentMessege: chat['time'],
-                                sentMessege: chat['message'],
-                              ),
-                      );
-                    },
-                  ),
+              ),
+          
+              Expanded(
+                child: ListView.builder(
+                  itemCount: chatProvider.chatData.length,
+                  itemBuilder: (context, index) {
+                    final chat = chatProvider.chatData[index];
+                    final bool isSentByUser = chat['isSentByUser'] ?? false;
+          
+                    return Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: isSentByUser
+                          ? IncomingAdminMessege(
+                              imageProfile: chat['profile'],
+                              dateTimeMessege: chat['time'],
+                              incomingMessege: chat['message'],
+                            )
+                          : SentMessege(
+                              dateSentMessege: chat['time'],
+                              sentMessege: chat['message'],
+                            ),
+                    );
+                  },
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomTextField(
-                        controller: chatProvider.sentMessageController,
-                        hintText: 'Ketik pesan di sini...',
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: CustomTextField(
+                      controller: chatProvider.sentMessageController,
+                      hintText: 'Ketik pesan di sini...',
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  Container(
+                    height: 40,
+                    width: 40,
+                    decoration: BoxDecoration(
+                      color: ColorStyles.white,
+                      shape: BoxShape.circle,
+                    ),
+                    child: IconButton(
+                      onPressed: chatProvider.sendMessage,
+                      icon: const Icon(
+                        size: 24,
+                        Icons.arrow_upward_outlined,
+                        color: ColorStyles.primary,
                       ),
                     ),
-                    const SizedBox(width: 10),
-                    Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        color: ColorStyles.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: IconButton(
-                        onPressed: chatProvider.sendMessage,
-                        icon: const Icon(
-                          size: 24,
-                          Icons.arrow_upward_outlined,
-                          color: ColorStyles.primary,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

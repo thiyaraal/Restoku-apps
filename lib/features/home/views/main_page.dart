@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:restoku_app/features/favorite/views/favorite_screen.dart';
+import 'package:restoku_app/features/home/view_models/main_provider.dart';
 import 'package:restoku_app/features/home/views/home_screen.dart';
 import 'package:restoku_app/features/home/views/widgets/bottom_navbar.dart';
 import 'package:restoku_app/features/order/views/resto_list.dart';
@@ -14,20 +16,14 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  int _selectedNavbar = 0;
-
   @override
   void initState() {
     super.initState();
-
-    if (widget.activeScreen != null) {
-      _selectedNavbar = widget.activeScreen!;
-    }
-  }
-
-  void _changeSelectedNavbar(int index) {
-    setState(() {
-      _selectedNavbar = index;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final provider = Provider.of<MainScreenProvider>(context, listen: false);
+      if (widget.activeScreen != null) {
+        provider.setInitialScreen(widget.activeScreen!);
+      }
     });
   }
 
@@ -48,15 +44,15 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) {
+    return Consumer<MainScreenProvider>(
+      builder: (context, provider, child) {
         return Scaffold(
           body: Column(
             children: [
               Expanded(
                 child: AnimatedSwitcher(
-                  duration: const Duration(milliseconds: 1000),
-                  child: screenBottomNavigation(_selectedNavbar),
+                  duration: const Duration(milliseconds: 500),
+                  child: screenBottomNavigation(provider.selectedNavbar),
                 ),
               ),
               Container(
@@ -68,8 +64,8 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                 ),
                 child: BottomNavbarWidget(
-                  currentIndex: _selectedNavbar,
-                  onTap: _changeSelectedNavbar,
+                  currentIndex: provider.selectedNavbar,
+                  onTap: provider.changeSelectedNavbar,
                 ),
               ),
             ],

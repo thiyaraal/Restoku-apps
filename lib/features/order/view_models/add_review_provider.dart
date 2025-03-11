@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:restoku_app/features/order/services/add_review_services.dart';
+import 'package:restoku_app/features/order/view_models/review_state.dart';
 
 class AddReviewProvider extends ChangeNotifier {
   final ReviewService _reviewService = ReviewService();
-  List<Map<String, dynamic>> _reviews = [];
-  bool _isLoading = false;
+
+  AddReviewState _state = AddReviewInitial();
+  AddReviewState get state => _state;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController reviewController = TextEditingController();
 
-  List<Map<String, dynamic>> get reviews => _reviews;
-  bool get isLoading => _isLoading;
+  void _setState(AddReviewState newState) {
+    _state = newState;
+    notifyListeners();
+  }
 
   Future<bool> postReview(String id) async {
     if (nameController.text.isEmpty || reviewController.text.isEmpty) {
-      return false; 
+      return false;
     }
 
-    _isLoading = true;
-    notifyListeners();
+    _setState(AddReviewLoading());
 
     try {
-      _reviews = await _reviewService.postReview(
+      final reviews = await _reviewService.postReview(
         id,
         nameController.text,
         reviewController.text,
@@ -30,13 +33,11 @@ class AddReviewProvider extends ChangeNotifier {
       nameController.clear();
       reviewController.clear();
 
-      return true; 
+      _setState(AddReviewSuccess(reviews));
+      return true;
     } catch (e) {
-
-      return false; 
-    } finally {
-      _isLoading = false;
-      notifyListeners();
+      _setState(AddReviewError("Failed to post review. Please try again."));
+      return false;
     }
   }
 

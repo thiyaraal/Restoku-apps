@@ -3,6 +3,7 @@ import 'package:provider/single_child_widget.dart';
 import 'package:restoku_app/features/favorite/services/sqflite_fav_service.dart';
 import 'package:restoku_app/features/favorite/view_models/local_fav_provoder.dart';
 import 'package:restoku_app/features/home/services/get_restaurant_service.dart';
+import 'package:restoku_app/features/home/view_models/main_provider.dart';
 import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
 import 'package:restoku_app/features/home/view_models/serach_provider.dart';
 import 'package:restoku_app/features/notification/services/local_notification_services.dart';
@@ -10,6 +11,7 @@ import 'package:restoku_app/features/notification/view_models/local_notification
 import 'package:restoku_app/features/notification/views/chat_provider.dart';
 import 'package:restoku_app/features/order/view_models/add_review_provider.dart';
 import 'package:restoku_app/features/order/view_models/detail_restaurant_provider.dart';
+import 'package:restoku_app/features/order/view_models/expanded_provider.dart';
 import 'package:restoku_app/features/profile/services/theme_provider.dart';
 
 List<SingleChildWidget> getProviders() {
@@ -43,6 +45,15 @@ List<SingleChildWidget> getProviders() {
     ),
     ChangeNotifierProvider<ChatProvider>(
       create: (_) => ChatProvider(),
+    ),
+    ChangeNotifierProvider<MainScreenProvider>(
+      create: (_) => MainScreenProvider(),
+    ),
+    ChangeNotifierProvider<ExpandableTextProvider>(
+      create: (_) => ExpandableTextProvider(),
+    ),
+    ChangeNotifierProvider<MainScreenProvider>(
+      create: (_) => MainScreenProvider(),
     ),
     ChangeNotifierProvider(
       create: (context) => LocalNotificationProvider(

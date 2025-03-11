@@ -1,39 +1,57 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:restoku_app/features/order/models/detail_restaurant_mode.dart';
 import 'package:restoku_app/features/order/services/detail_restaurant_service.dart';
+import 'package:restoku_app/features/order/view_models/detail_state.dart';
 
 class DetailRestaurantProvider with ChangeNotifier {
-  DetailRestaurantModel? _detail;
-  bool _isLoading = false;
-  String? _error;
+  DetailRestaurantState _state = DetailRestaurantLoading();
+  DetailRestaurantState get state => _state;
+
   String _selectedCategory = "foods";
-
-  String? imageUrl;
-
-  DetailRestaurantModel? get detail => _detail;
-  bool get isLoading => _isLoading;
-  String? get error => _error;
   String get selectedCategory => _selectedCategory;
-  String get image => imageUrl ?? "";
 
-  void _setLoading(bool value) {
-    _isLoading = value;
+  DetailRestaurantModel? get detail {
+    if (_state is DetailRestaurantSuccess) {
+      return (_state as DetailRestaurantSuccess).detail;
+    }
+    return null;
+  }
+
+  String get imageUrl {
+    if (_state is DetailRestaurantSuccess) {
+      return (_state as DetailRestaurantSuccess).imageUrl ?? "";
+    }
+    return "";
+  }
+
+  void _setState(DetailRestaurantState newState) {
+    _state = newState;
     notifyListeners();
   }
 
   Future<void> fetchDetail(String id, {String? initialImageUrl}) async {
-    _setLoading(true);
-    _error = null;
+    _setState(DetailRestaurantLoading());
 
     try {
-      _detail = await DetailRestaurantService.fetchDetailRestaurant(id);
+      final detail = await DetailRestaurantService.fetchDetailRestaurant(id);
 
-      imageUrl = initialImageUrl ?? _detail?.restaurant?.pictureId;
+      if (detail?.restaurant == null) {
+        _setState(DetailRestaurantError("No restaurant details found."));
+      } else {
+        _setState(DetailRestaurantSuccess(
+          detail!,
+          imageUrl: initialImageUrl ?? detail.restaurant?.pictureId,
+        ));
+      }
+    } on SocketException {
+      _setState(DetailRestaurantError(
+          "Network error. Please check your connection."));
     } catch (e) {
-      _error = e.toString();
+      _setState(DetailRestaurantError(
+          "Failed to load restaurant details. Please try again."));
     }
-
-    _setLoading(false);
   }
 
   void setCategory(String category) {
@@ -44,11 +62,15 @@ class DetailRestaurantProvider with ChangeNotifier {
   }
 
   List<Category> get filteredMenus {
-    if (_detail?.restaurant?.menus == null) return [];
+    if (_state is DetailRestaurantSuccess) {
+      final detail = (_state as DetailRestaurantSuccess).detail;
+      if (detail.restaurant?.menus == null) return [];
 
-    final menus = _detail!.restaurant!.menus!;
-    return _selectedCategory == "foods"
-        ? menus.foods ?? []
-        : menus.drinks ?? [];
+      final menus = detail.restaurant!.menus!;
+      return _selectedCategory == "foods"
+          ? menus.foods ?? []
+          : menus.drinks ?? [];
+    }
+    return [];
   }
 }

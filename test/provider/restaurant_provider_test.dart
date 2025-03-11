@@ -4,6 +4,7 @@ import 'package:mockito/annotations.dart';
 import 'package:restoku_app/features/home/view_models/restaurant_provider.dart';
 import 'package:restoku_app/features/home/services/get_restaurant_service.dart';
 import 'package:restoku_app/features/home/models/restaurant_model.dart';
+import 'package:restoku_app/features/home/view_models/restaurant_state.dart';
 
 import 'restaurant_provider_test.mocks.dart';
 
@@ -14,23 +15,15 @@ void main() {
 
   setUp(() {
     mockService = MockRestaurantServices();
-
-    
-    when(mockService.fetchRestaurants()).thenAnswer((_) async =>
-        AllRestaurantModel(
-            error: false, message: "success", count: 0, restaurants: []));
-
     provider = RestaurantProvider(mockService);
   });
 
-  test('State awal provider harus benar', () {
-    expect(provider.isLoading, false);
-    expect(provider.restaurants, isNull); 
-    expect(provider.error, isNull);
+  test('State awal provider harus `RestaurantInitial`', () {
+    expect(provider.state, isA<RestaurantInitial>());
   });
 
   test(
-      'Harus mengembalikan daftar restoran ketika pengambilan data API berhasil',
+      'Harus mengembalikan `RestaurantSuccess` ketika pengambilan data API berhasil',
       () async {
     final mockRestaurants = AllRestaurantModel(
       error: false,
@@ -42,28 +35,36 @@ void main() {
       ],
     );
 
-    
     when(mockService.fetchRestaurants())
         .thenAnswer((_) async => mockRestaurants);
 
     await provider.fetchRestaurants();
 
-    expect(provider.isLoading, false);
-    expect(provider.restaurants, isNotNull);
-    expect(provider.restaurants!.restaurants!.length, 2);
-    expect(provider.error, isNull);
+    expect(provider.state, isA<RestaurantSuccess>());
+
+    final successState = provider.state as RestaurantSuccess;
+
+    expect(successState.data.restaurants?.length, 2);
+
+    expect(successState.data.restaurants?[0].id, "1");
+    expect(successState.data.restaurants?[0].name, "Restaurant A");
+    expect(successState.data.restaurants?[0].rating, 4.8);
+
+    expect(successState.data.restaurants?[1].id, "2");
+    expect(successState.data.restaurants?[1].name, "Restaurant B");
+    expect(successState.data.restaurants?[1].rating, 4.7);
   });
 
-  test('Harus mengembalikan kesalahan ketika pengambilan data API gagal',
+  test(
+      'Harus mengembalikan `RestaurantError` ketika pengambilan data API gagal',
       () async {
-    
     when(mockService.fetchRestaurants()).thenThrow(Exception('API Error'));
 
     await provider.fetchRestaurants();
 
-    expect(provider.isLoading, false);
-    expect(provider.restaurants, isNull);
-    expect(provider.error, isNotNull);
-    expect(provider.error, contains('API Error'));
+    expect(provider.state, isA<RestaurantError>());
+
+    final errorState = provider.state as RestaurantError;
+    expect(errorState.message, "Network error occurred. Please try again.");
   });
 }
